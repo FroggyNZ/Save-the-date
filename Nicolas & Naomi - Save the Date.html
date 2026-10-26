@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Save Our Date! | Nicolas & Naomi — 25th March 2028</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            parchment: '#FBF7F0',
+            cream: '#F5ECE0',
+            terracotta: '#C85A32',
+            rust: '#9E3B24',
+            ochre: '#D99B26',
+            sage: '#6B7F69',
+            olive: '#4A5D4E',
+            espresso: '#2E231E',
+            warmgray: '#6E5A4F'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 25%, #F6EFE6 0%, #E7D8C5 60%, #DAC5AC 100%);
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: #2E231E;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Subtle paper grain overlay */
+    .paper-texture {
+      background-color: #FBF7F0;
+      background-image: 
+        radial-gradient(rgba(200, 90, 50, 0.03) 1px, transparent 0),
+        radial-gradient(rgba(107, 127, 105, 0.04) 1px, #FBF7F0 0);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+    }
+
+    /* Gentle swaying animation for botanicals */
+    @keyframes swaySlow {
+      0%, 100% { transform: rotate(0deg) translateY(0px); }
+      50% { transform: rotate(2.2deg) translateY(-2px); }
+    }
+    @keyframes swayReverse {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(-2.5deg) scale(1.01); }
+    }
+    @keyframes floatPetal {
+      0% {
+        transform: translateY(-10vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.65;
+      }
+      85% {
+        opacity: 0.65;
+      }
+      100% {
+        transform: translateY(105vh) translateX(40px) rotate(320deg);
+        opacity: 0;
+      }
+    }
+
+    .sway-slow {
+      animation: swaySlow 6s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    .sway-reverse {
+      animation: swayReverse 7s ease-in-out infinite;
+      transform-origin: top center;
+    }
+
+    /* Card reveal transition */
+    .card-stage {
+      transition: all 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Wax seal pulse */
+    @keyframes pulseGentle {
+      0%, 100% { transform: scale(1); box-shadow: 0 10px 25px -5px rgba(158, 59, 36, 0.5); }
+      50% { transform: scale(1.05); box-shadow: 0 15px 30px -5px rgba(158, 59, 36, 0.7); }
+    }
+    .wax-seal-btn {
+      animation: pulseGentle 3s infinite ease-in-out;
+    }
+
+    /* Floating petal styling */
+    .petal {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      animation: floatPetal linear infinite;
+    }
+
+    /* Custom ornamental border */
+    .double-arch-border {
+      border: 1.5px solid rgba(200, 90, 50, 0.28);
+      box-shadow: inset 0 0 0 5px #FBF7F0, inset 0 0 0 6px rgba(107, 127, 105, 0.25);
+    }
+  </style>
+</head>
+<body class="relative flex flex-col items-center justify-center min-h-screen py-6 px-3 sm:px-6 selection:bg-terracotta/20 selection:text-rust">
+
+  <!-- Ambient Floating Autumn Petals & Wildflower Seeds -->
+  <div id="petal-container" aria-hidden="true" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+  <!-- ==========================================
+       ENVELOPE INTRO OVERLAY (Click to Open)
+       ========================================== -->
+  <div id="envelope-Modal" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-espresso/40 backdrop-blur-sm transition-opacity duration-700">
+    <div class="relative w-full max-w-md bg-cream rounded-3xl p-6 sm:p-8 shadow-2xl border border-ochre/30 text-center overflow-hidden">
+      
+      <!-- Top Decorative Envelope Flap Lines -->
+      <svg class="w-full h-28 mx-auto -mt-6 mb-2 text-terracotta/25" viewBox="0 0 400 110" fill="none">
+        <path d="M0 0 L200 95 L400 0" stroke="currentColor" stroke-width="2" fill="rgba(217, 155, 38, 0.08)"/>
+        <path d="M15 0 L200 86 L385 0" stroke="#6B7F69" stroke-width="1" stroke-dasharray="4 4" fill="none"/>
+      </svg>
+
+      <!-- Mini Wildflower Sprig -->
+      <div class="flex justify-center -mt-12 mb-4">
+        <button id="open-envelope-btn" aria-label="Open Save the Date Card" class="wax-seal-btn relative w-20 h-20 rounded-full bg-gradient-to-br from-terracotta via-rust to-espresso text-parchment flex flex-col items-center justify-center border-4 border-ochre/40 cursor-pointer focus:outline-none">
+          <span class="font-serif italic text-xl font-bold tracking-wider leading-none">N&amp;N</span>
+          <span class="text-[9px] uppercase tracking-widest mt-1 text-ochre font-semibold">Tap to Open</span>
+        </button>
+      </div>
+
+      <p class="text-xs uppercase tracking-[0.25em] text-olive font-semibold mt-4 mb-1">A Special Delivery For You</p>
+      <h1 class="font-serif text-3xl sm:text-4xl text-espresso italic font-semibold mb-2">Nicolas &amp; Naomi</h1>
+      <p class="text-xs sm:text-sm text-warmgray mb-6">Saturday, 25th March 2028 • Ashhurst, NZ</p>
+
+      <button id="open-envelope-secondary" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-terracotta text-parchment text-xs font-semibold uppercase tracking-widest hover:bg-rust transition shadow-md">
+        <span>Open Save the Date</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MAIN SAVE THE DATE CARD
+       ========================================== -->
+  <main id="card-wrapper" class="relative z-10 w-full max-w-lg my-auto card-stage opacity-95 scale-95">
+    
+    <!-- Outer Card Frame -->
+    <article class="paper-texture relative rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_25px_60px_-15px_rgba(46,35,30,0.28)] overflow-hidden p-3 sm:p-5 border border-ochre/30">
+      
+      <!-- Inner Arch / Garden Frame -->
+      <div class="double-arch-border relative rounded-[1.6rem] sm:rounded-[2rem] px-5 py-10 sm:px-10 sm:py-12 text-center overflow-hidden">
+
+        <!-- TOP LEFT WILDFLOWER & AUTUMN FOLIAGE ILLUSTRATION -->
+        <svg class="w-40 h-40 sm:w-52 sm:h-52 absolute -top-4 -left-4 pointer-events-none select-none sway-reverse opacity-95" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Sage & Olive Eucalyptus Leaves -->
+          <path d="M10,160 Q50,90 130,35" stroke="#6B7F69" stroke-width="2" stroke-linecap="round"/>
+          <ellipse cx="45" cy="115" rx="16" ry="8" transform="rotate(-35 45 115)" fill="#6B7F69" fill-opacity="0.8"/>
+          <ellipse cx="75" cy="82" rx="18" ry="8" transform="rotate(-40 75 82)" fill="#4A5D4E" fill-opacity="0.85"/>
+          <ellipse cx="105" cy="55" rx="14" ry="7" transform="rotate(-45 105 55)" fill="#6B7F69" fill-opacity="0.8"/>
+          <ellipse cx="52" cy="138" rx="15" ry="7" transform="rotate(-15 52 138)" fill="#4A5D4E" fill-opacity="0.7"/>
+          
+          <!-- Warm Autumn Oak / Rust Sprig -->
+          <path d="M0,95 Q65,75 155,15" stroke="#9E3B24" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M85,55 C95,40 115,42 115,55 C105,65 92,62 85,55 Z" fill="#C85A32" fill-opacity="0.85"/>
+          <path d="M122,30 C132,16 150,18 148,30 C138,40 128,38 122,30 Z" fill="#D99B26" fill-opacity="0.85"/>
+
+          <!-- Golden Ochre Wildflower Blooms -->
+          <g transform="translate(65, 65)">
+            <circle cx="0" cy="-10" r="6" fill="#D99B26"/>
+            <circle cx="9" cy="-3" r="6" fill="#D99B26"/>
+            <circle cx="6" cy="8" r="6" fill="#D99B26"/>
+            <circle cx="-6" cy="8" r="6" fill="#D99B26"/>
+            <circle cx="-9" cy="-3" r="6" fill="#D99B26"/>
+            <circle cx="0" cy="0" r="5" fill="#9E3B24"/>
+          </g>
+
+          <!-- Terracotta Cosmos / Wildflower -->
+          <g transform="translate(32, 85)">
+            <ellipse cx="0" cy="-11" rx="5" ry="9" fill="#C85A32"/>
+            <ellipse cx="10" cy="-3" rx="9" ry="5" fill="#C85A32"/>
+            <ellipse cx="6" cy="9" rx="6" ry="8" transform="rotate(-30 6 9)" fill="#9E3B24"/>
+            <ellipse cx="-7" cy="8" rx="6" ry="8" transform="rotate(30 -7 8)" fill="#C85A32"/>
+            <ellipse cx="-10" cy="-3" rx="9" ry="5" fill="#9E3B24"/>
+            <circle cx="0" cy="0" r="4.5" fill="#D99B26"/>
+          </g>
+
+          <!-- Delicate Berries & Buds -->
+          <circle cx="145" cy="45" r="4" fill="#C85A32"/>
+          <circle cx="158" cy="35" r="3" fill="#D99B26"/>
+          <circle cx="28" cy="148" r="3.5" fill="#D99B26"/>
+          <circle cx="18" cy="162" r="2.5" fill="#9E3B24"/>
+        </svg>
+
+        <!-- TOP RIGHT WILDFLOWER & AUTUMN FOLIAGE ILLUSTRATION -->
+        <svg class="w-40 h-40 sm:w-52 sm:h-52 absolute -top-4 -right-4 pointer-events-none select-none sway-slow opacity-95" style="transform: scaleX(-1);" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10,160 Q50,90 130,35" stroke="#6B7F69" stroke-width="2" stroke-linecap="round"/>
+          <ellipse cx="45" cy="115" rx="16" ry="8" transform="rotate(-35 45 115)" fill="#6B7F69" fill-opacity="0.8"/>
+          <ellipse cx="75" cy="82" rx="18" ry="8" transform="rotate(-40 75 82)" fill="#4A5D4E" fill-opacity="0.85"/>
+          <ellipse cx="105" cy="55" rx="14" ry="7" transform="rotate(-45 105 55)" fill="#6B7F69" fill-opacity="0.8"/>
+          <path d="M0,95 Q65,75 155,15" stroke="#9E3B24" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M85,55 C95,40 115,42 115,55 C105,65 92,62 85,55 Z" fill="#D99B26" fill-opacity="0.85"/>
+          <g transform="translate(62, 68)">
+            <circle cx="0" cy="-10" r="6" fill="#C85A32"/>
+            <circle cx="9" cy="-3" r="6" fill="#C85A32"/>
+            <circle cx="6" cy="8" r="6" fill="#C85A32"/>
+            <circle cx="-6" cy="8" r="6" fill="#C85A32"/>
+            <circle cx="-9" cy="-3" r="6" fill="#C85A32"/>
+            <circle cx="0" cy="0" r="5" fill="#D99B26"/>
+          </g>
+          <g transform="translate(30, 92)">
+            <circle cx="0" cy="-8" r="5" fill="#D99B26"/>
+            <circle cx="8" cy="0" r="5" fill="#D99B26"/>
+            <circle cx="0" cy="8" r="5" fill="#D99B26"/>
+            <circle cx="-8" cy="0" r="5" fill="#D99B26"/>
+            <circle cx="0" cy="0" r="3.5" fill="#4A5D4E"/>
+          </g>
+          <circle cx="140" cy="42" r="4" fill="#9E3B24"/>
+          <circle cx="155" cy="28" r="3" fill="#D99B26"/>
+        </svg>
+
+        <!-- HEADER / EYEBROW CREST -->
+        <div class="relative z-10 mt-4 sm:mt-6 mb-3 flex flex-col items-center">
+          <!-- Delicate Wildflower Sprig Divider -->
+          <svg class="w-28 h-8 mb-2 text-terracotta" viewBox="0 0 120 32" fill="none">
+            <path d="M15,20 Q60,6 105,20" stroke="#6B7F69" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="60" cy="12" r="4.5" fill="#C85A32"/>
+            <circle cx="44" cy="15" r="3" fill="#D99B26"/>
+            <circle cx="76" cy="15" r="3" fill="#D99B26"/>
+            <ellipse cx="32" cy="18" rx="6" ry="2.5" transform="rotate(-15 32 18)" fill="#6B7F69"/>
+            <ellipse cx="88" cy="18" rx="6" ry="2.5" transform="rotate(15 88 18)" fill="#6B7F69"/>
+          </svg>
+
+          <span class="inline-block px-4 py-1 rounded-full bg-ochre/15 border border-ochre/30 text-rust font-sans text-xs sm:text-sm font-semibold uppercase tracking-[0.22em]">
+            Save Our Date!
+          </span>
+        </div>
+
+        <!-- COUPLE'S NAMES -->
+        <div class="relative z-10 my-5 sm:my-7">
+          <h1 class="font-serif text-5xl sm:text-6xl font-bold text-espresso tracking-tight leading-[1.08]">
+            Nicolas <span class="font-serif italic font-normal text-terracotta text-4xl sm:text-5xl align-middle px-1">&amp;</span> Naomi
+          </h1>
+        </div>
+
+        <!-- BOTANICAL DIVIDER -->
+        <div class="relative z-10 flex items-center justify-center gap-3 my-5">
+          <span class="h-px w-12 sm:w-20 bg-gradient-to-r from-transparent to-terracotta/50"></span>
+          <svg class="w-6 h-6 text-ochre" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C13.5 6.5 17.5 10.5 22 12C17.5 13.5 13.5 17.5 12 22C10.5 17.5 6.5 13.5 2 12C6.5 10.5 10.5 6.5 12 2Z" />
+          </svg>
+          <span class="h-px w-12 sm:w-20 bg-gradient-to-l from-transparent to-terracotta/50"></span>
+        </div>
+
+        <!-- DATE & LOCATION HIGHLIGHT -->
+        <div class="relative z-10 my-6 space-y-2">
+          <p class="font-serif text-2xl sm:text-3xl font-semibold text-rust tracking-wide">
+            Saturday, 25th March 2028
+          </p>
+          <div class="flex items-center justify-center gap-1.5 text-olive font-medium text-base sm:text-lg tracking-wide">
+            <svg class="w-4 h-4 text-terracotta shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span>Ashhurst, New Zealand</span>
+          </div>
+        </div>
+
+        <!-- SUBTEXT / FOOTER MESSAGE -->
+        <p class="relative z-10 font-serif italic text-xl sm:text-2xl text-warmgray max-w-xs sm:max-w-sm mx-auto leading-relaxed mt-4 mb-7">
+          Pop it in your calendar—formal invitation to come!
+        </p>
+
+        <!-- ==========================================
+             ADD TO CALENDAR BUTTONS (GOOGLE & APPLE)
+             ========================================== -->
+        <div class="relative z-10 bg-cream/90 border border-ochre/30 rounded-2xl p-4 sm:p-5 shadow-inner">
+          <p class="text-[11px] uppercase tracking-[0.2em] text-warmgray font-semibold mb-3">
+            Add to Your Calendar
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Google Calendar Link -->
+            <a
+              id="google-cal-btn"
+              href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nicolas+%26+Naomi%27s+Wedding&dates=20280325/20280326&details=Save+the+date+for+Nicolas+%26+Naomi%27s+wedding!+Pop+it+in+your+calendar%E2%80%94formal+invitation+to+come!&location=Ashhurst%2C+New+Zealand&sf=true&output=xml"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-center justify-center gap-2.5 w-full py-3 px-4 rounded-xl bg-terracotta hover:bg-rust text-parchment font-medium text-sm shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.99]"
+            >
+              <!-- Google Calendar SVG Icon -->
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01" stroke-linecap="round"></path>
+              </svg>
+              <span>Google Calendar</span>
+            </a>
+
+            <!-- Apple Calendar (.ics download) Button -->
+            <button
+              id="apple-cal-btn"
+              type="button"
+              class="group flex items-center justify-center gap-2.5 w-full py-3 px-4 rounded-xl bg-espresso hover:bg-olive text-parchment font-medium text-sm shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.99]"
+            >
+              <!-- Apple Logo SVG Icon -->
+              <svg class="w-4 h-4 shrink-0 fill-current" viewBox="0 0 24 24">
+                <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
+              </svg>
+              <span>Apple Calendar</span>
+            </button>
+          </div>
+
+          <p class="text-[11px] text-warmgray/80 mt-2.5">
+            Works on iPhone, iPad, Mac, Android, and Outlook
+          </p>
+        </div>
+
+        <!-- LIVE COUNTDOWN PILL & SHARE BUTTON -->
+        <div class="relative z-10 mt-6 pt-4 border-t border-ochre/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-warmgray">
+          <!-- Countdown Display -->
+          <div id="countdown-box" class="flex items-center gap-2 bg-parchment px-3.5 py-1.5 rounded-full border border-sage/30">
+            <span class="w-2 h-2 rounded-full bg-terracotta animate-ping"></span>
+            <span id="countdown-text" class="font-medium text-espresso">Counting down to 25 March 2028...</span>
+          </div>
+
+          <!-- Copy / Share Button -->
+          <button
+            id="share-btn"
+            type="button"
+            class="inline-flex items-center gap-1.5 text-rust hover:text-espresso font-semibold px-3 py-1.5 rounded-full hover:bg-ochre/15 transition"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+            </svg>
+            <span>Share Details</span>
+          </button>
+        </div>
+
+        <!-- BOTTOM WILDFLOWER GARDEN BORDER ILLUSTRATION -->
+        <div class="relative z-0 mt-5 -mb-8 pointer-events-none select-none flex justify-center">
+          <svg class="w-72 sm:w-80 h-20 sway-slow" viewBox="0 0 360 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Arching Stems -->
+            <path d="M20,80 Q110,25 180,55 Q250,25 340,80" stroke="#6B7F69" stroke-width="2" fill="none"/>
+            <path d="M60,85 Q180,15 300,85" stroke="#9E3B24" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+            
+            <!-- Leaves -->
+            <ellipse cx="95" cy="52" rx="14" ry="6" transform="rotate(-20 95 52)" fill="#6B7F69"/>
+            <ellipse cx="265" cy="52" rx="14" ry="6" transform="rotate(20 265 52)" fill="#6B7F69"/>
+            <ellipse cx="140" cy="44" rx="12" ry="5" transform="rotate(15 140 44)" fill="#4A5D4E"/>
+            <ellipse cx="220" cy="44" rx="12" ry="5" transform="rotate(-15 220 44)" fill="#4A5D4E"/>
+
+            <!-- Center Autumn Wildflower -->
+            <g transform="translate(180, 44)">
+              <circle cx="0" cy="-11" r="7" fill="#C85A32"/>
+              <circle cx="10" cy="-3" r="7" fill="#C85A32"/>
+              <circle cx="6" cy="9" r="7" fill="#C85A32"/>
+              <circle cx="-6" cy="9" r="7" fill="#C85A32"/>
+              <circle cx="-10" cy="-3" r="7" fill="#C85A32"/>
+              <circle cx="0" cy="0" r="6" fill="#D99B26"/>
+            </g>
+
+            <!-- Left Golden Daisy -->
+            <g transform="translate(118, 48)">
+              <circle cx="0" cy="-7" r="4.5" fill="#D99B26"/>
+              <circle cx="7" cy="0" r="4.5" fill="#D99B26"/>
+              <circle cx="0" cy="7" r="4.5" fill="#D99B26"/>
+              <circle cx="-7" cy="0" r="4.5" fill="#D99B26"/>
+              <circle cx="0" cy="0" r="3.5" fill="#9E3B24"/>
+            </g>
+
+            <!-- Right Golden Daisy -->
+            <g transform="translate(242, 48)">
+              <circle cx="0" cy="-7" r="4.5" fill="#D99B26"/>
+              <circle cx="7" cy="0" r="4.5" fill="#D99B26"/>
+              <circle cx="0" cy="7" r="4.5" fill="#D99B26"/>
+              <circle cx="-7" cy="0" r="4.5" fill="#D99B26"/>
+              <circle cx="0" cy="0" r="3.5" fill="#9E3B24"/>
+            </g>
+          </svg>
+        </div>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- TOAST NOTIFICATION MESSAGE BOX -->
+  <div
+    id="toast-box"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300 bg-espresso text-parchment px-5 py-3 rounded-full shadow-xl border border-ochre/40 flex items-center gap-2.5 text-xs sm:text-sm font-medium"
+  >
+    <span class="w-2.5 h-2.5 rounded-full bg-ochre shrink-0"></span>
+    <span id="toast-message">Added to your calendar!</span>
+  </div>
+
+  <!-- ==========================================
+       INTERACTIVE JAVASCRIPT
+       ========================================== -->
+  <script>
+    // 1. Toast Notification Helper (No alert() used)
+    const toastBox = document.getElementById('toast-box');
+    const toastMessage = document.getElementById('toast-message');
+    let toastTimeout = null;
+
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toastBox.classList.remove('opacity-0', 'translate-y-4');
+      toastBox.classList.add('opacity-100', 'translate-y-0');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toastBox.classList.remove('opacity-100', 'translate-y-0');
+        toastBox.classList.add('opacity-0', 'translate-y-4');
+      }, 3600);
+    }
+
+    // 2. Envelope Opening Interaction
+    const envelopeModal = document.getElementById('envelope-Modal');
+    const cardWrapper = document.getElementById('card-wrapper');
+    const openBtn1 = document.getElementById('open-envelope-btn');
+    const openBtn2 = document.getElementById('open-envelope-secondary');
+
+    function openCard() {
+      envelopeModal.classList.add('opacity-0', 'pointer-events-none');
+      cardWrapper.classList.remove('opacity-95', 'scale-95');
+      cardWrapper.classList.add('opacity-100', 'scale-100');
+      setTimeout(() => {
+        envelopeModal.style.display = 'none';
+      }, 700);
+    }
+
+    openBtn1.addEventListener('click', openCard);
+    openBtn2.addEventListener('click', openCard);
+
+    // 3. Apple Calendar (.ics) Generator & Downloader
+    // Works across iOS Safari, macOS Calendar, Outlook, and Android calendar apps
+    const appleCalBtn = document.getElementById('apple-cal-btn');
+
+    function downloadICSFile() {
+      const icsLines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Nicolas and Naomi Wedding//Save The Date//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        'UID:nicolas-naomi-wedding-20280325@savethedate.nz',
+        'SUMMARY:Nicolas & Naomi\'s Wedding',
+        'DTSTAMP:20261026T000000Z',
+        'DTSTART;VALUE=DATE:20280325',
+        'DTEND;VALUE=DATE:20280326',
+        'LOCATION:Ashhurst\\, New Zealand',
+        'DESCRIPTION:Save Our Date! Nicolas & Naomi are getting married on Saturday\\, 25th March 2028 in Ashhurst\\, New Zealand. Pop it in your calendar—formal invitation to come!',
+        'STATUS:CONFIRMED',
+        'TRANSP:TRANSPARENT',
+        'BEGIN:VALARM',
+        'TRIGGER:-P30D',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Nicolas & Naomi\'s Wedding in 1 month!',
+        'END:VALARM',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ];
+
+      const icsContent = icsLines.join('\r\n');
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Nicolas-and-Naomi-Wedding-2028.ics');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      showToast('Calendar file downloaded! Tap to add to Apple Calendar.');
+    }
+
+    appleCalBtn.addEventListener('click', downloadICSFile);
+
+    // Google Calendar feedback toast
+    const googleCalBtn = document.getElementById('google-cal-btn');
+    googleCalBtn.addEventListener('click', () => {
+      showToast('Opening Google Calendar...');
+    });
+
+    // 4. Live Countdown to Saturday, 25th March 2028 (NZDT)
+    const countdownText = document.getElementById('countdown-text');
+    const weddingDate = new Date('2028-03-25T00:00:00+13:00').getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = weddingDate - now;
+
+      if (diff <= 0) {
+        countdownText.textContent = "Today is the wedding day! 🎉";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      countdownText.textContent = `${days} days, ${hours} hrs until we say "I do"`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+
+    // 5. Share / Copy Card Details Button
+    const shareBtn = document.getElementById('share-btn');
+    const shareSummary = "Save Our Date!\nNicolas & Naomi\nSaturday, 25th March 2028\nAshhurst, New Zealand\nPop it in your calendar—formal invitation to come!";
+
+    shareBtn.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Save Our Date! Nicolas & Naomi',
+            text: shareSummary,
+            url: window.location.href
+          });
+          return;
+        } catch (err) {
+          // Fallback to clipboard copy if user cancels or share fails
+        }
+      }
+
+      // Fallback copy using textarea & execCommand for maximum iframe/mobile compatibility
+      const textArea = document.createElement('textarea');
+      textArea.value = shareSummary;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Save the Date details copied to clipboard!');
+      } catch (e) {
+        showToast('Ready to screenshot or share!');
+      }
+      document.body.removeChild(textArea);
+    });
+
+    // 6. Generate Gentle Floating Autumn Petals
+    const petalContainer = document.getElementById('petal-container');
+    const petalColors = ['#C85A32', '#D99B26', '#6B7F69', '#9E3B24'];
+
+    function createPetals() {
+      const count = 12;
+      for (let i = 0; i < count; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        const size = 8 + Math.random() * 10;
+        const left = Math.random() * 100;
+        const duration = 12 + Math.random() * 14;
+        const delay = Math.random() * 10;
+        const color = petalColors[i % petalColors.length];
+
+        petal.style.left = `${left}vw`;
+        petal.style.width = `${size}px`;
+        petal.style.height = `${size * 0.65}px`;
+        petal.style.backgroundColor = color;
+        petal.style.borderRadius = '60% 40% 60% 40%';
+        petal.style.animationDuration = `${duration}s`;
+        petal.style.animationDelay = `-${delay}s`;
+
+        petalContainer.appendChild(petal);
+      }
+    }
+
+    window.onload = function () {
+      createPetals();
+    };
+  </script>
+</body>
+</html>
